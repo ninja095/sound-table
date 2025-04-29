@@ -1,0 +1,35 @@
+  <table mat-table [dataSource]="audioItems$ | async" class="mat-elevation-z8">
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef>ID</th>
+      <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef>Наименование звука</th>
+      <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="fileName">
+      <th mat-header-cell *matHeaderCellDef>Имя файла</th>
+      <td mat-cell *matCellDef="let element">{{ element.fileName }}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns" (click)="onPlay(row.id)"></tr>
+  </table>
+
+  <ng-container *ngIf="selectedItem">
+    <mat-card class="player-card">
+      <mat-card-header>
+        <mat-card-title>Now Playing: {{ selectedItem.name }}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content class="player-content">
+        <ng-container *ngIf="selectedItem">
+          <audio #audioPlayer controls autoplay>
+            <source [src]="selectedItem?.fileUrl" type="audio/mpeg"/>
+            Your browser does not support the audio element.
+          </audio>
+        </ng-container>
+      </mat-card-content>
+    </mat-card>
+  </ng-container>
